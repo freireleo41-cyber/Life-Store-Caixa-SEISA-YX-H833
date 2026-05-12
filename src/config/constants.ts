@@ -1,3 +1,8 @@
+import imgMain from '../assets/caixa-main.webp';
+import imgFront from '../assets/caixa-front.webp';
+import imgControl from '../assets/caixa-control.webp';
+import imgHandle from '../assets/caixa-handle.webp';
+
 export const BRAND = {
   name: "Life Store",
   cnpj: "66.110.889/0001-78",
@@ -36,10 +41,10 @@ export const PRODUCT = {
   stockCount: 100,
   warranty: "3 meses do fabricante contra defeitos de fabricação",
   images: {
-    main: "https://http2.mlstatic.com/D_NQ_NP_900662-MLB75640384752_042024-O.webp", // Kit completo
-    front: "https://http2.mlstatic.com/D_NQ_NP_881855-MLB75811776953_042024-O.webp", // Frontal limpa
-    control: "https://http2.mlstatic.com/D_NQ_NP_705295-MLB75640356502_042024-O.webp", // Painel
-    handle: "https://http2.mlstatic.com/D_NQ_NP_727931-MLB75640317666_042024-O.webp", // Alca
+    main: imgMain,
+    front: imgFront,
+    control: imgControl,
+    handle: imgHandle,
   },
   specs: {
     type: "Caixa de som portátil ativa",
