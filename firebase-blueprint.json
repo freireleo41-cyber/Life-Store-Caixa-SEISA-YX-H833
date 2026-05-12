@@ -1,0 +1,72 @@
+{
+  "entities": {
+    "WholesaleLead": {
+      "title": "Wholesale Lead",
+      "description": "Captured lead for wholesale inquiries",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "whatsapp": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "city": { "type": "string" },
+        "state": { "type": "string" },
+        "desired_quantity": { "type": "number" },
+        "customer_type": { "type": "string", "enum": ["Revenda", "Loja", "Evento", "Uso próprio", "Outro"] },
+        "product": { "type": "string" },
+        "message": { "type": "string" },
+        "source": { "type": "string" },
+        "utm_source": { "type": "string" },
+        "utm_medium": { "type": "string" },
+        "utm_campaign": { "type": "string" },
+        "consent": { "type": "boolean" },
+        "created_at": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["new", "contacted", "closed", "rejected"] }
+      },
+      "required": ["name", "whatsapp", "email", "city", "state", "desired_quantity", "customer_type", "consent", "created_at", "status"]
+    },
+    "ProductClick": {
+      "title": "Product Click",
+      "description": "Event recorded when a user clicks a product action button",
+      "type": "object",
+      "properties": {
+        "product": { "type": "string" },
+        "event": { "type": "string" },
+        "button_location": { "type": "string" },
+        "destination": { "type": "string" },
+        "utm_source": { "type": "string" },
+        "utm_medium": { "type": "string" },
+        "utm_campaign": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" }
+      }
+    },
+    "SiteEvent": {
+      "title": "Site Event",
+      "description": "General analytics events on the site",
+      "type": "object",
+      "properties": {
+        "event": { "type": "string" },
+        "page": { "type": "string" },
+        "section": { "type": "string" },
+        "product": { "type": "string" },
+        "utm_source": { "type": "string" },
+        "utm_medium": { "type": "string" },
+        "utm_campaign": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" }
+      }
+    }
+  },
+  "firestore": {
+    "/wholesale_leads/{leadId}": {
+      "schema": "WholesaleLead",
+      "description": "Collection for capturing wholesale leads"
+    },
+    "/product_clicks/{clickId}": {
+      "schema": "ProductClick",
+      "description": "Collection for tracking button clicks"
+    },
+    "/site_events/{eventId}": {
+      "schema": "SiteEvent",
+      "description": "Collection for tracking site-wide events"
+    }
+  }
+}

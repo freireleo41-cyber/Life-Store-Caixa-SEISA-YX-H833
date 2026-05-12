@@ -1,0 +1,53 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Common helpers
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Lead validation
+    function isValidLead(data) {
+      return data.keys().hasAll(['name', 'whatsapp', 'email', 'city', 'state', 'desired_quantity', 'customer_type', 'consent', 'created_at', 'status'])
+        && data.name is string && data.name.size() <= 200
+        && data.whatsapp is string && data.whatsapp.size() <= 50
+        && data.email is string && data.email.size() <= 200
+        && data.city is string && data.city.size() <= 100
+        && data.state is string && data.state.size() <= 50
+        && data.desired_quantity is number
+        && data.customer_type in ['Revenda', 'Loja', 'Evento', 'Uso próprio', 'Outro']
+        && data.consent == true
+        && data.created_at == request.time
+        && data.status == 'new';
+    }
+
+    // Event validation
+    function isValidEvent(data) {
+      return data.keys().hasAll(['event', 'created_at'])
+        && data.event is string && data.event.size() <= 100
+        && data.created_at == request.time;
+    }
+
+    match /wholesale_leads/{leadId} {
+      allow create: if isValidId(leadId) && isValidLead(request.resource.data);
+      // Admin read (if we had admin auth, for now closed)
+    }
+
+    match /product_clicks/{clickId} {
+      allow create: if isValidId(clickId) && isValidEvent(request.resource.data);
+    }
+
+    match /site_events/{eventId} {
+      allow create: if isValidId(eventId) && isValidEvent(request.resource.data);
+    }
+  }
+}
